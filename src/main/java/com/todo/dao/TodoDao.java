@@ -78,7 +78,7 @@ public class TodoDao {
 
             
 
-            // Set the userId parameter
+            
             pstmt.setInt(1, userId);
 
             
@@ -87,6 +87,7 @@ public class TodoDao {
             // Iterate over all the rows returned
             while (rs.next()) {
                 TodoList row = new TodoList();
+                row.setId(rs.getInt("id"));
                 row.setTitle(rs.getString("title"));
                 row.setDescription(rs.getString("description"));
                 row.setIsDone(rs.getString("progress"));
@@ -99,6 +100,20 @@ public class TodoDao {
             e.printStackTrace();
         }
         return todoList;
+    }
+    
+    public boolean DeleteTodo(int id){
+        try{
+            Connection con = DbCon.getConnection();
+            String sql = "DELETE FROM todo_list where id = ?";
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, id);
+            
+            int rowsAffected = pstmt.executeUpdate();
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return false;
     }
 
 }
