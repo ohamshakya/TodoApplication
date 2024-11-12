@@ -5,24 +5,22 @@
 package com.todo.controller;
 
 import com.todo.connection.DbCon;
-import com.todo.dao.UserDao;
-import com.todo.models.User;
+import com.todo.dao.TodoDao;
+import com.todo.models.TodoList;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.mindrot.jbcrypt.BCrypt;
 
 /**
  *
  * @author ohams
  */
-public class UserLogin extends HttpServlet {
+public class UpdateTodo extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,53 +34,35 @@ public class UserLogin extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
         
-        System.out.println(username+password);
-       
-
-        User user = null;
-        String storedHash = null;
-        String sql = "SELECT * FROM users WHERE username = ?";
-
-        try(Connection connection = DbCon.getConnection(); 
-                PreparedStatement statement = connection.prepareStatement(sql)) {
-
-            statement.setString(1, username);
-           
-
-            try (ResultSet rs = statement.executeQuery()) {
-                if (rs.next()) {
-                    user = new User();
-                    user.setId(rs.getInt("id"));
-                    user.setUsername(rs.getString("username"));
-                    storedHash = rs.getString("password"); 
-                }
+       String title = request.getParameter("title");
+        String description = request.getParameter("description");
+        String progress = request.getParameter("isDone");
+        String target_date = request.getParameter("target_date");
+        
+        TodoList list = new TodoList();
+        list.setTitle(title);
+        list.setDescription(description);
+        list.setIsDone(progress);
+        list.setTargetDate(target_date);
+        RequestDispatcher dispatcher = null;
+        
+        try{
+            TodoDao dao = new TodoDao(DbCon.getConnection());
+            boolean isCheck = dao.updateTodo(list);
+            dispatcher = request.getRequestDispatcher("editTodo.jsp");
+            if(isCheck){
+                request.setAttribute("status", "updated successfully!");
+               
+            }else{
+                request.setAttribute("error", "Something went wrong!");
             }
-        } catch (Exception e) {
+            dispatcher.forward(request, response);
+        }catch(Exception e){
             e.printStackTrace();
-            HttpSession session = request.getSession(true);
-            session.setAttribute("error", "An error occurred while connecting to the database.");
-            response.sendRedirect("login.jsp"); 
         }
-
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            session.invalidate();
-        }
-        session = request.getSession(true);
-        //checking or decoding the hash password
-         if (storedHash != null && BCrypt.checkpw(password, storedHash)) {
-            session.setAttribute("user", user);
-            
-            session.removeAttribute("error");
-            response.sendRedirect("index.jsp");
-        } else {
-            
-            session.setAttribute("error", "Invalid credentials");
-            response.sendRedirect("login.jsp");
-        }
+        
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -9,7 +9,7 @@
 String error = (String) session.getAttribute("error");
 if (error != null) {
 %>
-    <div class="error mb-10 flex justify-center items-center"><%= error %></div>
+    <div class="error mb-10 flex justify-center items-center w-80"><%= error %></div>
 <%
     session.removeAttribute("error"); 
 }
@@ -21,16 +21,7 @@ if (error != null) {
         <title>Login</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <style>
-            .error{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                text-align: center;
-                background-color: red;
-                width: 250px;
-                height: 45px;
-                color: black;
-            }
+            
             
         </style>
     </head>

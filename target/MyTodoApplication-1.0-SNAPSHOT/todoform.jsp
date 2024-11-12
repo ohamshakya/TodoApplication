@@ -24,7 +24,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
    
   </head>
-  <body>
+  <body class="font-mono">
   <form class="max-w-sm mx-auto" action="TodoRegister" method="post">
   <div class="mb-5">
     <label for="title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Title</label>
@@ -36,7 +36,7 @@
   </div>
   <div class="mb-5">
     <label for="progress" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Progress</label>
-    <select name="isDone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+    <select name="isDone" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light">
         <option value="0">Select an option</option>
         <option value="success">success</option>
         <option value="inprogress">in progress</option>

@@ -16,6 +16,10 @@
         <servlet-name>TodoRegister</servlet-name>
         <servlet-class>com.todo.controller.TodoRegister</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UpdateTodo</servlet-name>
+        <servlet-class>com.todo.controller.UpdateTodo</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UserRegister</servlet-name>
         <url-pattern>/UserRegister</url-pattern>
@@ -31,6 +35,10 @@
     <servlet-mapping>
         <servlet-name>TodoRegister</servlet-name>
         <url-pattern>/TodoRegister</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateTodo</servlet-name>
+        <url-pattern>/UpdateTodo</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

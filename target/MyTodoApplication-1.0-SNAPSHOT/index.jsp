@@ -19,7 +19,7 @@
         <script src="https://cdn.tailwindcss.com"></script>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     </head>
-    <body>
+    <body class="font-mono">
       
         <nav class="fixed top-0 border-solid border-gray-200 w-full border-b py-3 bg-white z-50 bg-inherit">
             <div class="container mx-auto">

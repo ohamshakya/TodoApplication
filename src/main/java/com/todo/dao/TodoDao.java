@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import com.todo.connection.DbCon;
+import com.todo.models.User;
 import java.sql.ResultSet;
 
 /**
@@ -46,6 +47,8 @@ public class TodoDao {
         }
         return isInserted;
     }
+    
+   
 
     public List<TodoList> getAllTodo() throws ClassNotFoundException, SQLException {
         List<TodoList> list = new ArrayList<TodoList>();
@@ -75,13 +78,7 @@ public class TodoDao {
         List<TodoList> todoList = new ArrayList<>();
         String sql = "SELECT * FROM todo_list where user_id = ?";
         try (Connection conn = DbCon.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            
-
-            
             pstmt.setInt(1, userId);
-
-            
             ResultSet rs = pstmt.executeQuery();
 
             // Iterate over all the rows returned
@@ -102,6 +99,26 @@ public class TodoDao {
         return todoList;
     }
     
+    public boolean updateTodo(TodoList list){
+        boolean isUpdated = false;
+        try{
+            Connection con = DbCon.getConnection();
+            String sql = "Update todo_list set title = ?,description = ?,progress = ?,target_date = ? where id = ?";
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, list.getTitle());
+            pstmt.setString(2,list.getDescription());
+            pstmt.setString(3,list.getIsDone());
+            pstmt.setString(4,list.getTargetDate());
+            int i = pstmt.executeUpdate();
+            if(i == 1){
+                isUpdated = true;
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return isUpdated;
+    }
+    
     public boolean DeleteTodo(int id){
         try{
             Connection con = DbCon.getConnection();
@@ -114,6 +131,28 @@ public class TodoDao {
             e.printStackTrace();
         }
         return false;
+    }
+    
+    public TodoList getVlaues(int id){
+        TodoList list = new TodoList();
+        
+        try{
+            Connection con = DbCon.getConnection();
+            String sql = "SELECT * FROM todo_list where id = ?";
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            while(rs.next()){
+                list.setId(rs.getInt("id"));
+                list.setTitle(rs.getString("title"));
+                list.setDescription(rs.getString("description"));
+                list.setIsDone(rs.getString("progress"));
+                list.setTargetDate(rs.getString("target_date"));
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return list;
     }
 
 }

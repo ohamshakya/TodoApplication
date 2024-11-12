@@ -4,9 +4,11 @@
  */
 package com.todo.dao;
 
+import com.todo.connection.DbCon;
 import com.todo.models.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -51,6 +53,25 @@ public class UserDao {
         } 
         return isInserted;
 
+    }
+    public User userLogin(String username,String password){
+        User user = null;
+        try{
+            Connection con = DbCon.getConnection();
+            String sql = "SELECT * FROM user where username = ? and password = ?";
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, username);
+            pstmt.setString(2, password);
+            ResultSet rs = pstmt.executeQuery();
+            while(rs.next()){
+                user = new User();
+                user.setUsername(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return user;
     }
     
 }
