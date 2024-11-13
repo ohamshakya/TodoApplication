@@ -99,16 +99,18 @@ public class TodoDao {
         return todoList;
     }
     
-    public boolean updateTodo(TodoList list){
+    public boolean updateTodo(int id){
         boolean isUpdated = false;
+        TodoList list = new TodoList();
         try{
             Connection con = DbCon.getConnection();
             String sql = "Update todo_list set title = ?,description = ?,progress = ?,target_date = ? where id = ?";
             PreparedStatement pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, list.getTitle());
-            pstmt.setString(2,list.getDescription());
-            pstmt.setString(3,list.getIsDone());
-            pstmt.setString(4,list.getTargetDate());
+            pstmt.setInt(1, id);
+            pstmt.setString(2, list.getTitle());
+            pstmt.setString(3,list.getDescription());
+            pstmt.setString(4,list.getIsDone());
+            pstmt.setString(5,list.getTargetDate());
             int i = pstmt.executeUpdate();
             if(i == 1){
                 isUpdated = true;
